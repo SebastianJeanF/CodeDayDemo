@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <title>Weather App</title>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body style="background: rgba(16, 180, 198, 0.161)">
+  <section id="app" class="vh-30">
+    <div class="container py-5 h-100">
+
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+
+          <div class="card main-card" style="color: #4B515D; border-radius: 35px;">
+            <img id="demo-wrap" src="https://assets.digitalocean.com/labs/images/community_bg.png" alt="">
+            <div class="card-body p-4">
+
+              <div class="d-flex">
+                <h6 id="city-name">CodeDay</h6>
+              </div>
+
+              <div class="d-flex flex-column text-center mt-5 mb-4">
+                <h6 id="temp" class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> 13°C </h6>
+                <span id="description" style="color: #868B94">Stormy</span>
+                <h4 class="extremes">
+                  <div id="h_temp">H:88&deg;</div>
+                  <div id="l_temp">L:71&deg;</div>
+                </h4>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1" style="font-size: 1rem;">
+                  <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> Wind Speed: </span>
+                  </div>
+                  <div><i id="wind-speed" class="fas fa-sun fa-fw" style="color: #868B94;">XXX</i>
+                  </div>
+                </div>
+                <div>
+                  <img id="weather-icon"
+                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu1.webp" width="100px">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+
+  <div class="card pollen-card">
+    <div class="hazard-info">
+      <h3>Pollen Hazard Level: </h3>
+      <div id="pollen">XXX</div>
+      <!-- <lottie-player src="75196-flower.json" background="transparent" speed="1" style="width: 150px;" loop autoplay> -->
+      <!-- </lottie-player> -->
+      <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_3nmkzsqm.json" background="transparent"
+        speed="1" style="width: 150px;" loop autoplay>
+      </lottie-player>
+    </div>
+  </div>
+  <div class="card fire-card">
+    <div class="hazard-info">
+      <h3>Fire Hazard Level: </h3>
+      <div id="fire">XXX</div>
+      <!-- <lottie-player src="87498-fire.json" background="transparent" speed="1" style="width: 150px;" loop autoplay>
+      </lottie-player> -->
+      <lottie-player src="https://assets9.lottiefiles.com/packages/lf20_7n00ftey.json" background="transparent"
+        speed="1" style="width: 150px;" loop autoplay>
+      </lottie-player>
+    </div>
+  </div>
+  <br>
+  <div id="error">That is not a valid city name; try again!</div>
+  <form name="weatherForm">
+    <input name="city" type="city">
+    <button class="button btn btn-primary" id="action" type="button" onclick="weather()">Enter City Name</button>
+  </form>
+</body>
+
+</html>
+
+
+<style>
+  #error {
+    display: none;
+    margin: auto;
+    justify-content: center
+  }
+
+  .main-card {
+    box-shadow: 0px 3px 2px #888888;
+  }
+
+  button,
+  input {
+    margin-bottom: 5px;
+
+  }
+
+  #city-name {
+    display: flex;
+    justify-content: center;
+    color: black;
+    width: 20%;
+    font-size: 3rem;
+    margin: auto;
+    text-align: center;
+    text-shadow: 1px 1px 1px grey;
+  }
+
+  .temperature {
+    display: flex;
+    justify-content: center;
+    color: black;
+    width: 20%;
+    font-size: 3.25rem;
+    margin: auto;
+
+    text-shadow: 2px 2px whitesmoke;
+  }
+
+  .weather {
+    display: flex;
+    justify-content: center;
+    color: black;
+    width: 20%;
+    font-size: 2.25rem;
+    margin: auto;
+    text-align: center;
+    text-shadow: 2px 2px whitesmoke;
+  }
+
+  .extremes {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: black;
+    font-size: 2rem;
+    margin: auto;
+    text-shadow: 2px 2px whitesmoke;
+  }
+
+  .extremes div {
+    padding: 1rem;
+  }
+
+  form {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+  }
+
+  body {
+    /* background-image:url("https://3.bp.blogspot.com/-aYTVCA5COng/XJKyNs7WS-I/AAAAAAAGV6Q/nAFLU-Iu08UFP78Wq7JGqUfJTismZf8TwCLcBGAs/s1600/John-Constable-1776-1837-British-landscape-painter-1.jpg");
+        background-repeat:no-repeat; */
+
+  }
+
+  lottie-player {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .hazard-info {
+    text-align: center;
+  }
+
+  .hazard-info h5 {
+    color: black;
+    margin: auto;
+    text-shadow: 2px 2px whitesmoke;
+    display: inline;
+    vertical-align: middle;
+
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 50%
+  }
+
+  .button {
+    display: block;
+  }
+
+  #demo-wrap {
+    position: relative;
+  }
+
+  #demo-wrap {
+    opacity: 0.05;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .fire-card {
+    background: linear-gradient(rgba(255, 0, 0, 0.48), rgba(255, 151, 151, 0.48));
+    height: 20%;
+    text-shadow: 1px 1px 1px #FFFFFF;
+  }
+
+  .pollen-card {
+    background: linear-gradient(rgba(225, 255, 0, 0.48), rgba(250, 255, 151, 0.48));
+    height: 20%;
+    text-shadow: 1px 1px 1px #FFFFFF;
+  }
+
+  .card {
+    overflow: hidden;
+  }
+
+  #app {
+    background: url("https://web.extension.illinois.edu/treehouse/images/3305_1_large.jpg");
+    background-repeat: no-repeat;
+    background-size: contain, cover;
+    background-origin: content-box, padding-box;
+  }
+
+  #temp {
+    font-size: 4rem;
+    margin: 0;
+  }
+
+  #pollen,
+  #fire {
+    font-size: 1.2rem;
+  }
+</style>
+<script type="text/javascript">
+
+  function drawWeather(data) {
+    let fahrenheit = Math.round(data.main.temp);
+    let max_fahrenheit = Math.round(data.main.temp_max);
+    let min_fahrenheit = Math.round(data.main.temp_min);
+    document.getElementById('description').innerHTML = data.weather[0].description;
+    document.getElementById('temp').innerHTML = fahrenheit + '°F';
+    document.getElementById('h_temp').innerHTML = "H:" + max_fahrenheit + '°F';
+    document.getElementById('l_temp').innerHTML = "L:" + min_fahrenheit + '°F';
+    document.getElementById('city-name').innerHTML = data.name;
+    document.getElementById('wind-speed').innerHTML = data.wind.speed + "miles/hr";
+    let iconName = data.weather[0].icon;
+    let iconURL = "http://openweathermap.org/img/wn/" + iconName + "@2x.png";
+    console.log(iconURL);
+    document.getElementById('weather-icon').src = iconURL;
+    backgroundChanger(data);
+  }
+
+  function backgroundChanger(data) {
+    let weatherType = data.weather[0].main;
+    console.log(weatherType);
+    if (weatherType === 'Thunderstorm') {
+      document.getElementById('demo-wrap').src = 'https://miro.medium.com/max/1400/1*6d5dw6dPhy4vBp2vRW6uzw.png'
+    }
+    if (weatherType === 'Drizzle') {
+      document.getElementById('demo-wrap').src = 'https://miro.medium.com/max/1400/1*6d5dw6dPhy4vBp2vRW6uzw.png'
+    }
+    if (weatherType === 'Rain') {
+      document.getElementById('demo-wrap').src = 'https://miro.medium.com/max/1400/1*6d5dw6dPhy4vBp2vRW6uzw.png'
+    }
+    if (weatherType === 'Snow') {
+      document.getElementById('demo-wrap').src = 'https://miro.medium.com/max/1400/1*6d5dw6dPhy4vBp2vRW6uzw.png'
+    }
+    if (weatherType === 'Atmosphere') {
+      document.getElementById('demo-wrap').src = 'https://ichef.bbci.co.uk/images/ic/1200x675/p09gny3j.jpg'
+    }
+    if (weatherType === 'Clear') {
+      document.getElementById('demo-wrap').src = 'https://www.twoinchbrush.com/images/fanpaintings/fanpainting4157.jpg'
+      console.log("PASSED")
+    }
+    if (weatherType === 'Cloud') {
+      document.getElementById('demo-wrap').src = 'https://miro.medium.com/max/1400/1*6d5dw6dPhy4vBp2vRW6uzw.png'
+    }
+  }
+
+  // function fireAPI(link){
+  //     fetch(link, {
+  //         "method": "GET",
+  //         "headers": {
+  //             "x-api-key": "f2bb5ee119ee77dcd5ccdd8a54f9323c6ec8cb05973c01a63e51bd8ca7b6b8cb",
+  //             "Content-type": "application/json"
+  //         }
+  //         })	
+  //         .then(function(resp) { return resp.json() }) // Convert data to json
+  //         .then(function(data) {
+  //             console.log(data);
+  //             // if (data.message === "No fires were detected") {
+  //             //     document.getElementById('fire').innerHTML = "low" }
+  //             // else {
+  //             //     document.getElementById('fire').innerHTML = "high"
+  //             // }
+  //             if (data.message === "Fires detected") {
+  //                 document.getElementById('fire').innerHTML = "High"
+  //                 document.getElementById('fire').style.color = "green" }
+  //             else {
+  //                 document.getElementById('fire').innerHTML = "Low"
+  //                 document.getElementById('fire').style.color = "red"
+  //             }
+  //         })
+  //         .catch(function() {
+  //             // catch any errors
+  //         });
+  //     }
+
+  function fireProbability(data) {
+    humidityLvl = data.main.humidity
+    console.log(humidityLvl)
+    if (humidityLvl <= 50) {
+      document.getElementById('fire').innerHTML = "High"
+      document.getElementById('fire').style.color = "red"
+    }
+    else {
+      document.getElementById('fire').innerHTML = "Low"
+      document.getElementById('fire').style.color = "green"
+    }
+  }
+
+  function pollenAPI(link) {
+    fetch(link, {
+      "method": "GET",
+      "headers": {
+        "x-api-key": "f2bb5ee119ee77dcd5ccdd8a54f9323c6ec8cb05973c01a63e51bd8ca7b6b8cb",
+        "Content-type": "application/json"
+      }
+    })
+      .then(function (resp) { return resp.json() }) // Convert data to json
+      .then(function (data) {
+        console.log("Pollen Data");
+        console.log(data);
+        if (data.message === "We are currently working on expanding our coverage for pollen. The current version only supports locations in Europe and Asia.") {
+          document.getElementById('pollen').innerHTML = "Unknown"
+        }
+        else {
+          pollenLvl = data.data[0].Risk.grass_pollen;
+          console.log(pollenLvl);
+          document.getElementById('pollen').innerHTML = pollenLvl;
+          if ((pollenLvl === "High") || (pollenLvl === "Very High")) {
+            document.getElementById('pollen').style.color = "red";
+          }
+          else { document.getElementById('pollen').style.color = "green" }
+        }
+      })
+      .catch(function () {
+        // catch any errors
+      });
+  }
+
+  function weather() {
+    const API_KEY = "64b38d3f58717f4e8c8c6a8033addac1";
+    const city_name = document.weatherForm.city.value;
+    const base_url = "http://api.openweathermap.org/data/2.5/weather?";
+    const final_url_geocoding = base_url + "appid=" + API_KEY + "&q=" + city_name + "&units=imperial";
+    const coords = async function weatherAPI() {
+      let resp = await fetch(final_url_geocoding);
+      let data = await resp.json();
+      console.log(data);
+      if (data.cod === 200) {
+        document.getElementById('error').style.display = "none";
+        drawWeather(data);
+
+        let lat = data.coord.lat;
+        let long = data.coord.lon;
+        fireProbability(data)
+        // let fireAPILink = "https://api.ambeedata.com/latest/fire?lat=" + lat +  "&lng=" + long
+        let pollenAPILink = "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=" + lat + "&lng=" + long
+        pollenAPI(pollenAPILink)
+      }
+      else {
+        document.getElementById('error').style.display = "flex";
+      }
+    }
+    coords()
+  }
+
+</script>
